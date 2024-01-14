@@ -58,23 +58,36 @@ public class IOU {
     //setBorrower is method name
     // Inside parameters () put in data type and new field
     //In {} method body put old field = new field
-    public void setBorrower(String newborrower){
-        borrower = newborrower;
+    public void setBorrower(String borrower){
+        this.borrower = borrower;
     }
     
     //Create setter method for lender
-    public void setLender(String newlender){
-        lender = newlender;
+    public void setLender(String lender){
+        this.lender = lender;
     }
 
     //Create setter method for amount
-    public void setAmount(BigDecimal newamount){
-        amount = newamount;
+    public void setAmount(BigDecimal amount){
+        this.amount = amount;
     }
 
     //Create setter method for dateTime
-    public void setDateTime(Instant newdateTime){
-        dateTime = newdateTime;
+    public void setDateTime(Instant dateTime){
+        this.dateTime = dateTime;
+    }
+
+    //Anytime you create a getter & setter you need to override a toString method
+
+    @Override
+    public String toString(){
+        return "{" +
+            "id:" + id + 
+            ", borrower:" + borrower +
+            ", lender:" + lender +
+            ", amount:" + amount +
+            ", date:" + dateTime +
+        "}";
     }
 
     // Have not created a setter method for ID, because this is something that shouldn't be update. It should be uniqually identified
