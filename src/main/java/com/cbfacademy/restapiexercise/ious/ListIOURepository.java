@@ -137,10 +137,24 @@ public class ListIOURepository implements IOURepository{
       }
     
     @Override
-    public IOU update(IOU entity) throws IllegalArgumentException, PersistenceException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
+    public IOU update(IOU entity) throws IllegalArgumentException, PersistenceException {    
+    try{
+        //if statement if id does not exist
+       if(!ious.contains(entity)){
+            // exception message shows if the id does not exists
+            throw new IllegalArgumentException("iou does not exist");
+        }
+        ious.update(entity);
+
+    } catch (PersistenceException e) {
+        e.getMessage();
+       }
+       catch (Exception e){
+        e.getMessage();
+        e.getStackTrace();   
+       }
+
+      }
 
 
     
