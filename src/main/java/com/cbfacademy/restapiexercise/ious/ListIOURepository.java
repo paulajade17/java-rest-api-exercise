@@ -81,20 +81,64 @@ public class ListIOURepository implements IOURepository {
 
     @Override
     public IOU update(IOU entity) throws IllegalArgumentException, PersistenceException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
+        try{
+            //if statement if id does not exist
+           if(!ious.contains(entity)){
+                // exception message shows if the id does not exists
+                throw new IllegalArgumentException("iou does not exist");
+            }
+            ious.update(entity);
+    
+        } catch (PersistenceException e) {
+            e.getMessage();
+           }
+           catch (Exception e){
+            e.getMessage();
+            e.getStackTrace();   
+           }
+    
+          }
+    
 
     @Override
     public List<IOU> searchByBorrower(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchByBorrower'");
-    }
+        List<IOU> matchedBorrowers = new ArrayList <>();
 
+        for (IOU iou : ious) {
+            // If borrower is equal to the param name
+            //use geter method to check is borrower matches name
+            if (iou.getBorrower() == name) {
+                // Add the borrower to a list we want to return
+                //use add method from newlist to add
+                matchedBorrowers.add(iou);
+            }
+        
+        }
+
+        return matchedBorrowers;
+
+    }
     @Override
     public List<IOU> searchByLender(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchByLender'");
+        List<IOU> matchedLenders = new ArrayList <>();
+
+        for (IOU iou : ious) {
+            // If lender is equal to the param name
+            //use geter method to check is borrower matches name
+            if (iou.getLender() == name) {
+                // Add the borrower to a list we want to return
+                //use add method from newlist to add
+                matchedLenders.add(iou);
+            }
+        
+        }
+        
+
+        return matchedLenders;
+
+    }
+
+
     }
     
-}
+
