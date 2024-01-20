@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IOUController {
     public IOUService iouService; 
 
+    //pass in an interface not a concrete class.
+    //Interfaces describes things
     public IOUController(IOUService iouService){
         this.iouService = iouService;
 

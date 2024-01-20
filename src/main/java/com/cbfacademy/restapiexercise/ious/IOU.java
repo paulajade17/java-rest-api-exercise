@@ -4,15 +4,41 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+    /** IOU class represents IOU entity with details such as ID, borrower, lender, amount and date/time
+    */
 public class IOU {  
 
-    private UUID id;
+    /** unique identifer for the IOU
+    */
+    private final UUID id;
+
+     /** name of borrower in the IOU transaction
+    */
     private String borrower;
+
+     /** name of lender in the IOU transaction
+      * 
+    */
     private String lender;
+
+    /** amount of money in the IOU transaction
+     * 
+    */
     private BigDecimal amount;
+
+    /** date and time of the IOU was created
+     * 
+    */
     private Instant dateTime;
 
-    //IOU constructor method, did not include id as this constructor is to creates a new id
+    
+    /** IOU constructor method, did not include id as this constructor is to creates a new id
+     * Paramatised constructor
+     * @param borrower
+     * @param lender
+     * @param amount
+     * @param dateTime
+    */
 
     public IOU(String borrower, String lender, BigDecimal amount, Instant dateTime){
 
@@ -24,58 +50,79 @@ public class IOU {
         this.amount = amount;
         this.dateTime = dateTime;
     }
-    //yellow curly error line means field is not in use
-    //Create getter methods to resolve this
+   
+   
+    /**
+     * Create a getter method - Get the ID of the IOU
+     * Always make your getters public
+     * 
+     * @return the unique identifer for IOU (id)
+    */ 
 
-    //Create a getter method for id field
-    //getters are always public i.e. read only
-    // access modifer, return type, method name (){}
+
     public UUID getID(){
-        return id;
+        return this.id;
     }
 
-    //Create a getter method for borrower field
+     /** Create a getter method - get the name of the borrower 
+      * 
+     * @return the name of the borrower in the IOU transaction
+    */
+    
     public String getBorrower(){
-        return borrower;
+        return this.borrower;
     }
 
-    //Create a getter method for lender field
+   /** Create a getter method - get the name of the lender
+    * 
+     * @return the name of the lender in the IOU transaction
+    */
     public String getLender(){
-        return lender;
+        return this.lender;
     }
 
-    //Create a getter method for amount field
+   /** Create a getter method - get the IOU amount
+     * 
+     * @return the amount of money in the IOU transaction
+    */
     public BigDecimal getAmount(){
-        return amount;
+        return this.amount;
     }
 
-    //Create a getter method for dateTime field
+   /** Create a getter method - get the date and time the IOU was created
+     * 
+     * @return the date and time the IOU was created
+    */
     public Instant getDateTime(){
-        return dateTime;
+        return this.dateTime;
     }
 
-    //Create setter method for borrower and has no return tyoe, so it is void
-    //setBorrower is method name
-    // Inside parameters () put in data type and new field
-    //In {} method body put old field = new field
+   
+    /** Create a setter method - set the name of the borrower
+     * 
+     * @param borrower the name of the borrower to set in the IOU
+    */
     public void setBorrower(String borrower){
         this.borrower = borrower;
     }
-    
-    //Create setter method for lender
+
+  /** Create a setter method - set the name of the lender
+     * 
+     *  @param lender the name of the lender to set in the IOU
+    */
     public void setLender(String lender){
         this.lender = lender;
     }
 
-    //Create setter method for amount
+     /** Create setter method - set amount of money in the IOU transaction
+     * 
+     * @param amount the amount of money to set in the IOU
+    */
     public void setAmount(BigDecimal amount){
         this.amount = amount;
     }
 
-    //Create setter method for dateTime
-    public void setDateTime(Instant dateTime){
-        this.dateTime = dateTime;
-    }
+    // Cannot set dat & time, this is done at the start with the constructor
 
     //Anytime you create a getter & setter you need to override a toString method
 
