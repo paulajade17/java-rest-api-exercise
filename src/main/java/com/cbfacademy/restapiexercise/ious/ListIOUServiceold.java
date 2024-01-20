@@ -7,12 +7,12 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ListIOUService {
+public class ListIOUServiceold {
 
     final List<IOU> ious = new ArrayList<>();
     // Create a new field of type IOURepository called repository
     public IOURepository repository;
-    public ListIOUService (IOURepository iouRepository) {
+    public ListIOUServiceold (IOURepository iouRepository) {
         // Assign repository (line 13) to the iouRepository value in our parameter
         this.repository = iouRepository;
     }

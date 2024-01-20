@@ -78,26 +78,36 @@ public class ListIOURepository implements IOURepository {
     
           }
     
-
+          //I need help with this code as this is chatgpt 
     @Override
     public IOU update(IOU entity) throws IllegalArgumentException, PersistenceException {
-        try{
-            //if statement if id does not exist
-           if(!ious.contains(entity)){
-                // exception message shows if the id does not exists
-                throw new IllegalArgumentException("iou does not exist");
+        try {
+            // Check if the entity's ID exists in the collection
+            boolean idExists = ious.stream().anyMatch(iou -> iou.getID().equals(entity.getID()));
+    
+            if (!idExists) {
+                // If the ID does not exist, throw an exception
+                throw new IllegalArgumentException("IOU with the given ID does not exist");
             }
-            ious.update(entity);
     
+            // Perform the update operation on the specific IOU object
+            for (int i = 0; i < ious.size(); i++) {
+                if (ious.get(i).getID().equals(entity.getID())) {
+                    // Update properties of the existing IOU with the provided entity
+                    ious.set(i, entity);
+                    break; // Assuming each ID is unique; exit the loop after updating
+                }
+            }
+            
         } catch (PersistenceException e) {
-            e.getMessage();
-           }
-           catch (Exception e){
-            e.getMessage();
-            e.getStackTrace();   
-           }
-    
-          }
+            // Log or rethrow the exception
+            throw e;
+        } catch (Exception e) {
+            // Log or rethrow the exception with stack trace
+            throw new PersistenceException("Error updating IOU");
+        }
+        return entity;
+    }
     
 
     @Override
