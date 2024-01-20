@@ -7,40 +7,35 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ListIOUServiceold {
+public class ListIOUService implements IOUService{
 
-    final List<IOU> ious = new ArrayList<>();
-    // Create a new field of type IOURepository called repository
-    public IOURepository repository;
-    public ListIOUServiceold (IOURepository iouRepository) {
-        // Assign repository (line 13) to the iouRepository value in our parameter
-        this.repository = iouRepository;
+    private final List <IOU> ious = new ArrayList<>();
+
+    @Override
+    public List<IOU> getAllIOUs() {
+       return ious;
     }
 
-    //implement methods in IOUservice interface
-    public List<IOU> getAllIOUs(){
-        return ious;
-    }
-
-     public IOU getIOU(UUID id){
+    @Override
+    public IOU getIOU(UUID id) {
         for(IOU iou : ious){
             if(iou.getID() == id){
                 return iou;
             }
-
         }
         return null;
      }
 
-     // adding new IOU to list
-    public IOU createIOU(IOU iou){
+
+    @Override
+    public IOU createIOU(IOU iou) {
         ious.add(iou);
         return iou;
-        
     }
 
-    public IOU updateIOU(UUID id, IOU updatedIOU){
-        //create a loop to find IOU with id
+    @Override
+    public IOU updateIOU(UUID id, IOU updatedIOU) {
+           //create a loop to find IOU with id
         // Then update iou and replace it in the list 
 
         for(IOU iou: ious){
@@ -54,9 +49,10 @@ public class ListIOUServiceold {
         return updatedIOU;
     }
 
+    
 
-    public void deleteIOU(UUID id){
-        //enhanced for loop to loop through the list of ious
+    @Override
+    public void deleteIOU(UUID id) {
         for(IOU iou: ious){
             //get method to find if iou is equal to id
             if(iou.getID() == id){
@@ -64,19 +60,8 @@ public class ListIOUServiceold {
                 //use remove method to delete iou
                ious.remove(iou); 
             }
-        }
-                
-
     }
     
-
-
-
-
-
-
-
-    
-    
+}
 
 }
