@@ -44,4 +44,6 @@ public interface IOUService {
      */
     void deleteIOU(UUID id);
 
+    void replaceIOUByID(UUID id, IOU updateIOU);
+
 }
