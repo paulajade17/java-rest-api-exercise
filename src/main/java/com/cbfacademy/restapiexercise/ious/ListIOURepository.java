@@ -2,153 +2,83 @@ package com.cbfacademy.restapiexercise.ious;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import com.cbfacademy.restapiexercise.core.PersistenceException;
-
 @Repository
 public class ListIOURepository implements IOURepository {
 
-    final List<IOU> ious = new ArrayList<>();
+    private final List<IOU> ious = new ArrayList<>();
 
     @Override
-    public List<IOU> retrieveAll() throws PersistenceException {
-        return new ArrayList<>(ious);
+    public List<IOU> findAll()  {
+        return ious;
     }
 
     @Override
-    public IOU retrieve(UUID id) throws IllegalArgumentException, PersistenceException {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null");     
-        }
-            for (IOU iou : ious) {
-                // If id is equal to the param name id
-                //use geter method to check if id matches name
-                if (iou.getId().compareTo(id) == 0) {
-                    // Add the borrower to a list we want to return
-                    //use add method from newlist to add
-                    return iou;
-                }  
-                
-            }
-          throw new PersistenceException("IOU not found for ID" +id);  
+    public Optional<IOU> findById(UUID id) {
+        return ious.stream()
+                .filter(iou -> iou.getId().equals(id))
+                .findFirst();
     }
 
     @Override
-    public IOU create(IOU entity) throws IllegalArgumentException, PersistenceException {
-        try {
-            if(ious.contains(entity)){
-                // exception message shows if the id exists
-                throw new IllegalArgumentException("iou already exists" + entity.getId());
-            }
-            //if iou doesn't exist it is added to the list. This is the created iou
-            ious.add(entity);
-            
-           } catch (PersistenceException e) {
-            e.getMessage();
-           }
-           catch (Exception e){
-            e.getMessage();
-            e.getStackTrace();   
-           }
-           
-           return entity;
-        }
-    
+    public void deleteById(UUID id) {
+        ious.removeIf(iou -> iou.getId().equals(id));
+    }
 
     @Override
-    public void delete(IOU entity) throws IllegalArgumentException, PersistenceException {
-        try{
-            //if statement if id does not exist
-           if(!ious.contains(entity)){
-                // exception message shows if the id does not exists
-                throw new IllegalArgumentException("iou does not exist");
-            }
-            ious.remove(entity);
-    
-        } catch (PersistenceException e) {
-            e.getMessage();
-           }
-           catch (Exception e){
-            e.getMessage();
-            e.getStackTrace();   
-           }
-    
-          }
-    
-          //I need help with this code as this is chatgpt 
-    @Override
-    public IOU update(IOU entity) throws IllegalArgumentException, PersistenceException {
-        try {
-            // Check if the entity's ID exists in the collection
-            boolean idExists = ious.stream().anyMatch(iou -> iou.getId().equals(entity.getId()));
-    
-            if (!idExists) {
-                // If the ID does not exist, throw an exception
-                throw new IllegalArgumentException("IOU with the given ID does not exist");
-            }
-    
-            // Perform the update operation on the specific IOU object
+    public <S extends IOU> S save(S entity) {
+        UUID id = entity.getId();
+
+        if (findById(id).isPresent()) {
             for (int i = 0; i < ious.size(); i++) {
-                if (ious.get(i).getId().equals(entity.getId())) {
-                    // Update properties of the existing IOU with the provided entity
+                IOU iou = ious.get(i);
+
+                if (iou.getId().equals(id)) {
                     ious.set(i, entity);
-                    break; // Assuming each ID is unique; exit the loop after updating
+
+                    return entity;
                 }
             }
-            
-        } catch (PersistenceException e) {
-            // Log or rethrow the exception
-            throw e;
-        } catch (Exception e) {
-            // Log or rethrow the exception with stack trace
-            throw new PersistenceException("Error updating IOU");
         }
-        return entity;
+        else {
+            ious.add(entity);
+        }
+
+        throw new IllegalArgumentException("IOU not found.");
     }
-    
 
     @Override
     public List<IOU> searchByBorrower(String name) {
-        List<IOU> matchedBorrowers = new ArrayList <>();
+        List<IOU> matchedIOUs = new ArrayList<IOU>();
 
-        for (IOU iou : ious) {
-            // If borrower is equal to the param name
-            //use geter method to check is borrower matches name
-            if (iou.getBorrower() == name) {
-                // Add the borrower to a list we want to return
-                //use add method from newlist to add
-                matchedBorrowers.add(iou);
+        for (int i = 0; i < ious.size(); i++) {
+            IOU iou = ious.get(i);
+
+            if (iou.getBorrower().equals(name)) {
+                matchedIOUs.add(iou);
             }
-        
         }
 
-        return matchedBorrowers;
-
+        return matchedIOUs;
     }
+
     @Override
     public List<IOU> searchByLender(String name) {
-        List<IOU> matchedLenders = new ArrayList <>();
+        List<IOU> matchedIOUs = new ArrayList<IOU>();
 
-        for (IOU iou : ious) {
-            // If lender is equal to the param name
-            //use geter method to check is borrower matches name
-            if (iou.getLender() == name) {
-                // Add the borrower to a list we want to return
-                //use add method from newlist to add
-                matchedLenders.add(iou);
+        for (int i = 0; i < ious.size(); i++) {
+            IOU iou = ious.get(i);
+
+            if (iou.getLender().equals(name)) {
+                matchedIOUs.add(iou);
             }
-        
         }
-        
 
-        return matchedLenders;
-
-    }
-
-
+        return matchedIOUs;
     }
     
-
+}

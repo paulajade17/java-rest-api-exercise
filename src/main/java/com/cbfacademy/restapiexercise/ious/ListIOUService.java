@@ -22,7 +22,7 @@ public class ListIOUService implements IOUService {
 
     @Override
     public List<IOU> getAllIOUs() {
-        return iterableToList(repository.retrieveAll());
+        return iterableToList(repository.findAll());
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ListIOUService implements IOUService {
 
     @Override
     public IOU createIOU(IOU iou) {
-        return repository.create(iou);
+        return repository.save(iou);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class ListIOUService implements IOUService {
         iou.setLender(updatedIOU.getLender());
         iou.setAmount(updatedIOU.getAmount());
 
-        return repository.update(iou);
+        return repository.save(iou);
     }
 
     @Override
     public void deleteIOU(UUID id) {
-       IOU iou = getValidIOU(id).get();
-        repository.delete(iou);
+        getValidIOU(id);
+        repository.deleteById(id);
     }
 
     protected <T> List<T> iterableToList(Iterable<T> iterable) {
@@ -61,12 +61,12 @@ public class ListIOUService implements IOUService {
     }
 
     protected Optional<IOU> getValidIOU(UUID id) {
-        IOU found = repository.retrieve(id);
+        Optional<IOU> found = repository.findById(id);
 
-        if (found != null) {
+        if (!found.isPresent()) {
             throw new IllegalArgumentException("IOU not found.");
         }
 
-        return Optional.of(found);
+        return found;
     }
 }

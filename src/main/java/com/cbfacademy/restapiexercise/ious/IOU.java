@@ -4,143 +4,121 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-    /** IOU class represents IOU entity with details such as ID, borrower, lender, amount and date/time
-    */
+/**
+ * The IOU class represents an IOU (I Owe You) entity with details such as ID, borrower, lender, amount, and date/time.
+ */
+public class IOU {
 
-public class IOU {  
+	/**
+	 * The unique identifier for the IOU.
+	 */
+	private final UUID id;
 
-    /** unique identifer for the IOU
-    */
-    private final UUID id;
+	/**
+	 * The name of the borrower in the IOU transaction.
+	 */
+	private String borrower;
 
-     /** name of borrower in the IOU transaction
-    */
-    private String borrower;
+	/**
+	 * The name of the lender in the IOU transaction.
+	 */
+	private String lender;
 
-     /** name of lender in the IOU transaction
-      * 
-    */
-    private String lender;
+	/**
+	 * The amount of money in the IOU transaction.
+	 */
+	private BigDecimal amount;
 
-    /** amount of money in the IOU transaction
-     * 
-    */
-    private BigDecimal amount;
+	/**
+	 * The date and time when the IOU was created.
+	 */
+	private Instant dateTime;
 
-    /** date and time of the IOU was created
-     * 
-    */
-    private Instant dateTime;
+	/**
+	 * Parameterised constructor to create an IOU with specified details.
+	 *
+	 * @param borrower The name of the borrower.
+	 * @param lender   The name of the lender.
+	 * @param amount   The amount of money in the IOU.
+	 * @param dateTime The date and time when the IOU was created.
+	 */
+	public IOU(String borrower, String lender, BigDecimal amount, Instant dateTime) {
+		this.id = UUID.randomUUID();
+		this.borrower = borrower;
+		this.lender = lender;
+		this.amount = amount;
+		this.dateTime = dateTime;
+	}
 
-    
-    /** IOU constructor method, did not include id as this constructor is to creates a new id
-     * Paramatised constructor
-     * @param borrower
-     * @param lender
-     * @param amount
-     * @param dateTime
-    */
+	/**
+	 * Get the ID of the IOU.
+	 *
+	 * @return The unique identifier for the IOU.
+	 */
+	public UUID getId() {
+		return this.id;
+	}
 
-    public IOU(String borrower, String lender, BigDecimal amount, Instant dateTime){
+	/**
+	 * Get the name of the borrower.
+	 *
+	 * @return The name of the borrower in the IOU transaction.
+	 */
+	public String getBorrower() {
+		return this.borrower;
+	}
 
-        //UUID.randomUUID generates a random id
+	/**
+	 * Set the name of the borrower.
+	 *
+	 * @param borrower The name of the borrower to set in the IOU transaction.
+	 */
+	public void setBorrower(String borrower) {
+		this.borrower = borrower;
+	}
 
-        this.id = UUID.randomUUID();
-        this.borrower = borrower;
-        this.lender = lender;
-        this.amount = amount;
-        this.dateTime = dateTime;
-    }
-   
-   
-    /**
-     * Create a getter method - Get the ID of the IOU
-     * Always make your getters public
-     * 
-     * @return the unique identifer for IOU (id)
-    */ 
+	/**
+	 * Get the name of the lender.
+	 *
+	 * @return The name of the lender in the IOU transaction.
+	 */
+	public String getLender() {
+		return this.lender;
+	}
 
+	/**
+	 * Set the name of the lender.
+	 *
+	 * @param lender The name of the lender to set in the IOU transaction.
+	 */
+	public void setLender(String lender) {
+		this.lender = lender;
+	}
 
-    public UUID getId(){
-        return this.id;
-    }
+	/**
+	 * Get the amount of money in the IOU transaction.
+	 *
+	 * @return The amount of money in the IOU.
+	 */
+	public BigDecimal getAmount() {
+		return this.amount;
+	}
 
-     /** Create a getter method - get the name of the borrower 
-      * 
-     * @return the name of the borrower in the IOU transaction
-    */
-    
-    public String getBorrower(){
-        return this.borrower;
-    }
+	/**
+	 * Set the amount of money in the IOU transaction.
+	 *
+	 * @param amount The amount of money to set in the IOU.
+	 */
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-   /** Create a getter method - get the name of the lender
-    * 
-     * @return the name of the lender in the IOU transaction
-    */
-    public String getLender(){
-        return this.lender;
-    }
-
-   /** Create a getter method - get the IOU amount
-     * 
-     * @return the amount of money in the IOU transaction
-    */
-    public BigDecimal getAmount(){
-        return this.amount;
-    }
-
-   /** Create a getter method - get the date and time the IOU was created
-     * 
-     * @return the date and time the IOU was created
-    */
-    public Instant getDateTime(){
-        return this.dateTime;
-    }
-
-   
-    /** Create a setter method - set the name of the borrower
-     * 
-     * @param borrower the name of the borrower to set in the IOU
-    */
-    public void setBorrower(String borrower){
-        this.borrower = borrower;
-    }
-
-  /** Create a setter method - set the name of the lender
-     * 
-     *  @param lender the name of the lender to set in the IOU
-    */
-    public void setLender(String lender){
-        this.lender = lender;
-    }
-
-     /** Create setter method - set amount of money in the IOU transaction
-     * 
-     * @param amount the amount of money to set in the IOU
-    */
-    public void setAmount(BigDecimal amount){
-        this.amount = amount;
-    }
-
-    // Cannot set dat & time, this is done at the start with the constructor
-
-    //Anytime you create a getter & setter you need to override a toString method
-
-    @Override
-    public String toString(){
-        return "{" +
-            "id:" + id + 
-            ", borrower:" + borrower +
-            ", lender:" + lender +
-            ", amount:" + amount +
-            ", date:" + dateTime +
-        "}";
-    }
-
-    // Have not created a setter method for ID, because this is something that shouldn't be update. It should be uniqually identified
-
-    
-
-
+	/**
+	 * Get the date and time when the IOU was created.
+	 *
+	 * @return The date and time of the IOU creation.
+	 */
+	public Instant getDateTime() {
+		return this.dateTime;
+	}
 }
