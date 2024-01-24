@@ -12,11 +12,11 @@ import java.util.stream.StreamSupport;
  * Service class to manage IOU objects using in-memory List-based storage.
  */
 @Service
-public class ListIOUService implements IOUService {
+public class DefaultIOUService implements IOUService {
 
     private final IOURepository repository;
 
-    public ListIOUService(IOURepository repository) {
+    public DefaultIOUService(IOURepository repository) {
         this.repository = repository;
     }
 
