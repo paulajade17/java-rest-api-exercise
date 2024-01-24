@@ -61,7 +61,7 @@ public class IOU {
     */ 
 
 
-    public UUID getID(){
+    public UUID getId(){
         return this.id;
     }
 

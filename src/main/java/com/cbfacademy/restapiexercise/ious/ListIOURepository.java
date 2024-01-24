@@ -26,7 +26,7 @@ public class ListIOURepository implements IOURepository {
             for (IOU iou : ious) {
                 // If id is equal to the param name id
                 //use geter method to check if id matches name
-                if (iou.getID().compareTo(id) == 0) {
+                if (iou.getId().compareTo(id) == 0) {
                     // Add the borrower to a list we want to return
                     //use add method from newlist to add
                     return iou;
@@ -41,7 +41,7 @@ public class ListIOURepository implements IOURepository {
         try {
             if(ious.contains(entity)){
                 // exception message shows if the id exists
-                throw new IllegalArgumentException("iou already exists" + entity.getID());
+                throw new IllegalArgumentException("iou already exists" + entity.getId());
             }
             //if iou doesn't exist it is added to the list. This is the created iou
             ious.add(entity);
@@ -83,7 +83,7 @@ public class ListIOURepository implements IOURepository {
     public IOU update(IOU entity) throws IllegalArgumentException, PersistenceException {
         try {
             // Check if the entity's ID exists in the collection
-            boolean idExists = ious.stream().anyMatch(iou -> iou.getID().equals(entity.getID()));
+            boolean idExists = ious.stream().anyMatch(iou -> iou.getId().equals(entity.getId()));
     
             if (!idExists) {
                 // If the ID does not exist, throw an exception
@@ -92,7 +92,7 @@ public class ListIOURepository implements IOURepository {
     
             // Perform the update operation on the specific IOU object
             for (int i = 0; i < ious.size(); i++) {
-                if (ious.get(i).getID().equals(entity.getID())) {
+                if (ious.get(i).getId().equals(entity.getId())) {
                     // Update properties of the existing IOU with the provided entity
                     ious.set(i, entity);
                     break; // Assuming each ID is unique; exit the loop after updating

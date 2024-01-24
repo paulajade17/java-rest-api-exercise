@@ -1,64 +1,118 @@
 package com.cbfacademy.restapiexercise.ious;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Io;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import java.util.List;
+import java.util.UUID;
 
+/**
+ * Controller class to implement IOU API endpoints.
+ */
 @RestController
-@RequestMapping("api/ious")
+@RequestMapping("/api/ious")
 public class IOUController {
 
     private final IOUService iouService;
 
-    //only pass an interface not a concrete class
-    @Autowired 
-    public IOUController(IOUService iouService){
+    public IOUController(IOUService iouService) {
         this.iouService = iouService;
     }
 
-   @GetMapping("/api/ious")
-   public List<IOU> getAllIOUs(){
-    return iouService.getAllIOUs();
-   }
+    /**
+     * Retrieve a list of all IOUs.
+     *
+     * @return A ResponseEntity containing a list of all IOUs and HttpStatus OK if
+     *         successful.
+     */
+    @GetMapping
+    public ResponseEntity<List<IOU>> getAllIOUs() {
+        List<IOU> ious = iouService.getAllIOUs();
 
-   @GetMapping("/api/ious/{id}")
-   public IOU getIOUByID(@PathVariable UUID id) {
-    return iouService.getIOU(id);
-   }
+        return new ResponseEntity<>(ious, HttpStatus.OK);
+    }
 
-   @PostMapping("/api/ious")
-   public IOU createIOU(@RequestBody IOU iou){
-    return iouService.createIOU(iou);
-   } 
+    /**
+     * Retrieve a specific IOU by its ID.
+     *
+     * @param id The ID of the IOU to retrieve.
+     * @return A ResponseEntity containing the requested IOU and HttpStatus OK if
+     *         found,
+     *         or HttpStatus NOT_FOUND if the ID is not found.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<IOU> getIOU(@PathVariable UUID id) {
+        try {
+            IOU iou = iouService.getIOU(id);
 
-   @PutMapping("/api/ious/{id}")
-   public IOU updateIOU(@PathVariable UUID id, @RequestBody IOU updatedIOU) {
-    iouService.replaceIOUByID(id, updatedIOU);
-    return updatedIOU;
-   }
-   
-   @DeleteMapping("/api/ious/{id}")
-   public void deleteIOU(UUID id){
-    iouService.deleteIOU(id);
-   }
+            return new ResponseEntity<>(iou, HttpStatus.OK);
+        } catch(IllegalArgumentException exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
+    /**
+     * Create a new IOU.
+     *
+     * @param iou The IOU object to create.
+     * @return A ResponseEntity containing the created IOU and HttpStatus CREATED if
+     *         successful.
+     */
+    @PostMapping
+    public ResponseEntity<IOU> createIOU(@RequestBody IOU iou) {
+        IOU createdIOU = iouService.createIOU(iou);
+
+        return new ResponseEntity<>(createdIOU, HttpStatus.CREATED);
+    }
+
+    /**
+     * Update an existing IOU by ID.
+     *
+     * @param id         The ID of the IOU to update.
+     * @param updatedIOU The updated IOU object.
+     * @return A ResponseEntity containing the updated IOU and HttpStatus OK if
+     *         successful,
+     *         or HttpStatus NOT_FOUND if the ID is not found.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<IOU> updateIOU(@PathVariable UUID id, @RequestBody IOU updatedIOU) {
+        try {
+            IOU iou = iouService.updateIOU(id, updatedIOU);
+
+            return new ResponseEntity<>(iou, HttpStatus.OK);
+        } catch (IllegalArgumentException exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Delete an IOU by ID.
+     *
+     * @param id The ID of the IOU to delete.
+     * @return A ResponseEntity with HttpStatus NO_CONTENT if the IOU was
+     *         successfully deleted,
+     *         or HttpStatus NOT_FOUND if the ID was not found.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteIOU(@PathVariable UUID id) {
+        try {
+            iouService.deleteIOU(id);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException exception) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
-    
 
 
-    
+
+
+
+
+
+
+
+
+

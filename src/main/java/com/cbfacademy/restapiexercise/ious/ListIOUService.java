@@ -1,67 +1,72 @@
 package com.cbfacademy.restapiexercise.ious;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
-@Service
-public class ListIOUService implements IOUService{
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-    private final List <IOU> ious = new ArrayList<>();
+/**
+ * Service class to manage IOU objects using in-memory List-based storage.
+ */
+@Service
+public class ListIOUService implements IOUService {
+
+    private final IOURepository repository;
+
+    public ListIOUService(IOURepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<IOU> getAllIOUs() {
-       return ious;
+        return iterableToList(repository.retrieveAll());
     }
 
     @Override
     public IOU getIOU(UUID id) {
-        for(IOU iou : ious){
-            if(iou.getID() == id){
-                return iou;
-            }
-        }
-        return null;
-     }
+        Optional<IOU> iou = getValidIOU(id);
 
+        return iou.orElseThrow();
+    }
 
     @Override
     public IOU createIOU(IOU iou) {
-        ious.add(iou);
-        return iou;
+        return repository.create(iou);
     }
 
     @Override
     public IOU updateIOU(UUID id, IOU updatedIOU) {
-           //create a loop to find IOU with id
-        // Then update iou and replace it in the list 
+        Optional<IOU> found = getValidIOU(id);
 
-        for(IOU iou: ious){
-            if(iou.getID() == id){
-                // get the position of the iou in the list. this is required so we can replace the iou in the next line
-                int index = ious.indexOf(iou);
-                // update iou and replace it in the list with the matching id
-                ious.set(index, updatedIOU);
-            }
-        }
-        return updatedIOU;
+        IOU iou = found.orElseThrow();
+        iou.setBorrower(updatedIOU.getBorrower());
+        iou.setLender(updatedIOU.getLender());
+        iou.setAmount(updatedIOU.getAmount());
+
+        return repository.update(iou);
     }
-
-    
 
     @Override
     public void deleteIOU(UUID id) {
-        for(IOU iou: ious){
-            //get method to find if iou is equal to id
-            if(iou.getID() == id){
-                //if the iou matches the id
-                //use remove method to delete iou
-               ious.remove(iou); 
-            }
+       IOU iou = getValidIOU(id).get();
+        repository.delete(iou);
     }
-    
-}
 
+    protected <T> List<T> iterableToList(Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    protected Optional<IOU> getValidIOU(UUID id) {
+        IOU found = repository.retrieve(id);
+
+        if (found != null) {
+            throw new IllegalArgumentException("IOU not found.");
+        }
+
+        return Optional.of(found);
+    }
 }
